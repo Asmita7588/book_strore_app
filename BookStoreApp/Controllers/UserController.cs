@@ -42,5 +42,23 @@ namespace BookStoreApp.Controllers
                 return BadRequest(new ResponseModel<UserEntity> { Success = false, Message = "Register failed", Data = result });
             }
         }
+
+
+        [HttpPost]
+        [Route("loginUser")]
+
+        public IActionResult LoginUser(LoginModel loginModel)
+        {
+
+            var user = userManager.LoginUser(loginModel);
+            if (user != null)
+            {
+                return Ok(new ResponseModel<string> { Success = true, Message = "login successfully", Data = user });
+            }
+            return BadRequest(new ResponseModel<string> { Success = false, Message = "login failed", Data = user });
+
+        }
     }
+
+
 }

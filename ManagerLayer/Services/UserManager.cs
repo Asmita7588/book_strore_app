@@ -29,5 +29,10 @@ namespace ManagerLayer.Services
         {
             return userRepo.CheckMail(mail);
         }
+
+        public string LoginUser(LoginModel userLoginModel)
+        {
+            return userRepo.LoginUser(userLoginModel);
+        }
     }
 }

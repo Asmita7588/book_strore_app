@@ -10,5 +10,7 @@ namespace RepositoryLayer.Interfaces
     {
         public AdminEntity RegisterAdmin(RegisterModel model);
         public bool CheckMail(string mail);
+
+        public string LoginAdmin(LoginModel adminLoginModel);
     }
 }
