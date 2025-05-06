@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Jwt;
 
 namespace RepositoryLayer.Services
 {
@@ -20,11 +21,13 @@ namespace RepositoryLayer.Services
 
         private readonly BookStoreContext context;
         private readonly IConfiguration configuration;
+        private readonly JwtFile jwtFile;
 
-        public UserRepo(BookStoreContext context, IConfiguration configuration)
+        public UserRepo(BookStoreContext context, IConfiguration configuration, JwtFile jwtFile)
         {
             this.context = context;
             this.configuration = configuration;
+            this.jwtFile = jwtFile;
         }
 
         public UserEntity RegisterUser(RegisterModel model)
@@ -56,12 +59,19 @@ namespace RepositoryLayer.Services
 
         public bool CheckMail(string mail)
         {
-            var result = this.context.Users.FirstOrDefault(x => x.Email == mail);
-            if (result == null)
+            try
             {
-                return false;
+                var result = this.context.Users.FirstOrDefault(x => x.Email == mail);
+                if (result == null)
+                {
+                    return false;
+                }
+                return true;
             }
-            return true;
+            catch (Exception ex) {
+
+                throw new Exception($"Email does not exists: {ex.Message}");
+            }
         }
 
 
@@ -73,7 +83,7 @@ namespace RepositoryLayer.Services
                 if (user != null)
                 {
 
-                    var token = GenerateToken(user.Email, user.UserId, user.Role);
+                    var token = jwtFile.GenerateToken(user.Email, user.UserId, user.Role);
                     return token;
                 }
                 return null;
@@ -81,35 +91,50 @@ namespace RepositoryLayer.Services
             catch (Exception ex)
             {
 
-                return null;
+                throw new Exception($"User not found: {ex.Message}");
             }
         }
 
-        private string GenerateToken(string email, int userId, string role)
+        public ForgotPasswordModel ForgotPassword(string Email)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var claims = new[]
+            try
             {
-                new Claim("Email", email),
-                new Claim("Role", role),
-                new Claim("UserId", userId.ToString())
+                UserEntity user = context.Users.ToList().Find(user => user.Email == Email);
+                ForgotPasswordModel forgotPassword = new ForgotPasswordModel();
+                forgotPassword.Email = user.Email;
+                forgotPassword.UserId = user.UserId;
+                forgotPassword.Token = jwtFile.GenerateToken(user.Email, user.UserId, user.Role);
+                return forgotPassword;
 
-            };
-            var token = new JwtSecurityToken(configuration["Jwt:Issuer"],
-                configuration["Jwt:Audience"],
-                claims,
-                expires: DateTime.Now.AddHours(2),
-                signingCredentials: credentials);
+            }catch (Exception ex)
+            {
 
+                throw new Exception($"Eror in forgot password: {ex.Message}");
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
-
+            }
         }
+        public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel)
+        {
+            try
+            {
+                UserEntity user = context.Users.ToList().Find(user => user.Email == Email);
 
+                if (CheckMail(user.Email))
+                {
+                    user.Password = EncodePasswordToBase6(resetPasswordModel.ConfirmPassword);
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex) {
 
-
-   
+                throw new Exception($"Email does not exists: {ex.Message}");
+            }
+        }
 
 
 

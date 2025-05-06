@@ -20,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Jwt;
 using RepositoryLayer.Services;
 
 
@@ -44,24 +45,26 @@ namespace BookStoreApp
             services.AddTransient<IUserManager, UserManager>();
             services.AddTransient<IAdminRepo, AdminRepo>();
             services.AddTransient<IAdminManager, AdminManager>();
+            services.AddTransient<JwtFile>();
+
 
 
             //for swagger gen
             services.AddSwaggerGen(
-           option =>
-           {
-               option.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore API", Version = "v1" });
-               option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+               option =>
                {
-                   In = ParameterLocation.Header,
-                   Description = "please enter a valid token",
-                   Name = "Authorization",
-                   Type = SecuritySchemeType.Http,
-                   BearerFormat = "JWT",
-                   Scheme = "Bearer"
-               });
-               option.AddSecurityRequirement(new OpenApiSecurityRequirement
-               {
+                   option.SwaggerDoc("v1", new OpenApiInfo { Title = "BookStore API", Version = "v1" });
+                   option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                   {
+                       In = ParameterLocation.Header,
+                       Description = "please enter a valid token",
+                       Name = "Authorization",
+                       Type = SecuritySchemeType.Http,
+                       BearerFormat = "JWT",
+                       Scheme = "Bearer"
+                   });
+                   option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                   {
                         {
                             new OpenApiSecurityScheme
                             {
@@ -74,30 +77,30 @@ namespace BookStoreApp
                             new string[] { }
                         }
 
+                   });
+
                });
 
-           });
 
 
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                var Key = Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]);
-                o.SaveToken = true;
-                o.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = Configuration["Jwt:Issue"],
-                    ValidAudience = Configuration["Jwt:Audienece"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Key)
-                };
-            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+               .AddJwtBearer(options =>
+               {
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateLifetime = true,
+                       ValidateIssuerSigningKey = true,
+                       ValidIssuer = Configuration["Jwt:Issuer"],
+                       ValidAudience = Configuration["Jwt:Audience"],
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                   };
+               });
+
+
+
 
 
 
@@ -123,6 +126,7 @@ namespace BookStoreApp
             });
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
