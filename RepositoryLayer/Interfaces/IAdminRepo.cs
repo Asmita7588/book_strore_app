@@ -7,10 +7,14 @@ using RepositoryLayer.Entity;
 namespace RepositoryLayer.Interfaces
 {
    public interface IAdminRepo
-    {
+   {
         public AdminEntity RegisterAdmin(RegisterModel model);
         public bool CheckMail(string mail);
 
         public string LoginAdmin(LoginModel adminLoginModel);
+
+        public ForgotPasswordModel ForgotPassword(string Email);
+
+        public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel);
     }
 }
