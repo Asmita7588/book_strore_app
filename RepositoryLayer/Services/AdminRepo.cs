@@ -9,11 +9,10 @@ using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
-
-using RepositoryLayer.Jwt;
-
-using RepositoryLayer.Migrations;
 using RepositoryLayer.Models;
+using RepositoryLayer.Jwt;
+using RepositoryLayer.Migrations;
+
 
 
 namespace RepositoryLayer.Services
@@ -34,28 +33,9 @@ namespace RepositoryLayer.Services
 
         public RegisterModel RegisterAdmin(RegisterModel model)
         {
-<<<<<<< HEAD
-            try
-            {
-                AdminEntity admin = new AdminEntity();
-                admin.FullName = model.FullName;
-                admin.Email = model.Email;
-                admin.MobileNumber = model.MobileNumber;
-                admin.Password = EncodePasswordToBase6(model.Password); ;
-                this.context.Admins.Add(admin);
-                context.SaveChanges();
-                return admin;
-=======
-<<<<<<< Updated upstream
-            AdminEntity admin = new AdminEntity();
-            admin.FullName = model.FullName;
-            admin.Email = model.Email;
-            admin.MobileNumber = model.MobileNumber;
-            admin.Password = EncodePasswordToBase6(model.Password); ;
-            this.context.Admins.Add(admin);
-            context.SaveChanges();
-            return admin;
-=======
+
+
+
             try
             {
                 var admin = new AdminEntity
@@ -74,17 +54,14 @@ namespace RepositoryLayer.Services
                     Email = model.Email,
                     MobileNumber = model.MobileNumber,
                 };
->>>>>>> user
+
             }
             catch (Exception ex) {
 
                 throw new Exception("Error in Admin registration" + ex.Message);
 
             }
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> user
+
         }
 
         private string EncodePasswordToBase64(string password)
@@ -161,11 +138,6 @@ namespace RepositoryLayer.Services
         }
 
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> user
         public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel)
         {
             try
@@ -174,11 +146,10 @@ namespace RepositoryLayer.Services
 
                 if (CheckMail(admin.Email))
                 {
-<<<<<<< HEAD
-                    admin.Password = EncodePasswordToBase6(resetPasswordModel.ConfirmPassword);
-=======
+
+                    
                     admin.Password = EncodePasswordToBase64(resetPasswordModel.ConfirmPassword);
->>>>>>> user
+
                     context.SaveChanges();
                     return true;
                 }
@@ -196,13 +167,6 @@ namespace RepositoryLayer.Services
 
 
 
-
-
-
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> user
 
     }
 }

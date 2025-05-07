@@ -13,23 +13,17 @@ namespace RepositoryLayer.Interfaces
 
         public string LoginUser(LoginModel userLoginModel);
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-=======
->>>>>>> user
+
         public ForgotPasswordModel ForgotPassword(string Email);
 
         public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel);
 
-<<<<<<< HEAD
-=======
+
         public RefreshLoginResponse AccessTokenLogin(LoginModel userLogin);
 
         public RefreshLoginResponse RefreshAccessToken(string refreshToken);
 
->>>>>>> Stashed changes
->>>>>>> user
+
 
     }
 }

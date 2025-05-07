@@ -66,19 +66,12 @@ namespace BookStoreApp.Controllers
             return BadRequest(new ResponseModel<string> { Success = false, Message = "login failed", Data = user });
 
         }
-<<<<<<< HEAD
 
-
-        [HttpPost]
-        [Route("ForgotPassword")]
-=======
-<<<<<<< Updated upstream
-=======
 
 
         [HttpPost]
         [Route("forgot-password")]
->>>>>>> user
+
         public IActionResult ForgotPassowod(string Email)
         {
             try
@@ -113,11 +106,8 @@ namespace BookStoreApp.Controllers
 
         [Authorize]
         [HttpPost]
-<<<<<<< HEAD
-        [Route("ResetPassword")]
-=======
+
         [Route("reset-password")]
->>>>>>> user
 
         public ActionResult ResetPassword(ResetPasswordModel reset)
         {
@@ -139,9 +129,6 @@ namespace BookStoreApp.Controllers
                 throw ex;
             }
         }
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> user
+
     }
 }
