@@ -4,21 +4,26 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace CommonLayer.Models
+namespace RepositoryLayer.Models
 {
     public class RegisterModel
     {
         
         [Column("FUllName", TypeName = "varchar(100)")]
+        [Required(ErrorMessage = "FirstName required")]
+        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "only letters are accepted")]
         public string FullName { get; set; }
 
-        [Required]
-        [EmailAddress]
+        
+        [Required(ErrorMessage = "Email required")]
+        [EmailAddress(ErrorMessage = "Invalid Email format")]
         [Column("Email", TypeName = "varchar(100)")]
         public string Email { get; set; }
 
-        [Required]
+        
         [Column("Password", TypeName = "varchar(100)")]
+        [Required(ErrorMessage = "Password required")]
+        [MinLength(6, ErrorMessage = "min 6 characters required")]
         public string Password { get; set; }
 
         [Required]

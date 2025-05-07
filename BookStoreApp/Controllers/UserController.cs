@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using System;
-using CommonLayer.Models;
 using ManagerLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,26 +8,26 @@ using RepositoryLayer.Entity;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using ManagerLayer.Services;
+using RepositoryLayer.Models;
+using RepositoryLayer.Migrations;
 
 namespace BookStoreApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/user")]
     [ApiController]
     public class UserController : ControllerBase
     {
         private readonly IUserManager  userManager;
         private readonly IBus bus;
-        private readonly IJwtManager jwtManager;
+       
 
-        public UserController( IUserManager userManager, IJwtManager jwtManager)
+        public UserController( IUserManager userManager)
         {
             this.userManager = userManager;
-            this.jwtManager = jwtManager;
+            
         }
 
         [HttpPost]
-        [Route("registerUser")]
-
         public IActionResult Register(RegisterModel model)
         {
 
@@ -37,18 +36,24 @@ namespace BookStoreApp.Controllers
                 var check = userManager.CheckMail(model.Email);
                 if (check)
                 {
-                    return BadRequest(new ResponseModel<AdminEntity> { Success = true, Message = "email already Exists" });
+                    return BadRequest(new ResponseModel<RegisterModel> { Success = true, Message = "email already Exists" });
 
                 }
                 else
                 {
                     var result = userManager.RegisterUser(model);
+                    var response = new RegistrationResponseModel
+                    {
+                        FullName = result.FullName,
+                        Email = result.Email,
+                        MobileNumber = result.MobileNumber
+                    };
                     if (result != null)
                     {
-                        return Ok(new ResponseModel<UserEntity> { Success = true, Message = "Register successfully", Data = result });
-
+                        return Ok(new ResponseModel<RegistrationResponseModel> { Success = true, Message = "Register successfully", Data = response });
+                        
                     }
-                    return BadRequest(new ResponseModel<UserEntity> { Success = false, Message = "Register failed", Data = result });
+                    return BadRequest(new ResponseModel<string> { Success = false, Message = "Register failed" });
                 }
             }
             catch (Exception ex) {
@@ -58,7 +63,7 @@ namespace BookStoreApp.Controllers
         }
 
         [HttpPost]
-        [Route("loginUser")]
+        [Route("login")]
 
         public IActionResult LoginUser(LoginModel loginModel)
         {
@@ -82,7 +87,7 @@ namespace BookStoreApp.Controllers
         }
 
         [HttpPost]
-        [Route("ForgotPassword")]
+        [Route("Forgot-password")]
         public IActionResult ForgotPassowod(string Email)
         {
             try
@@ -117,7 +122,7 @@ namespace BookStoreApp.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("ResetPassword")]
+        [Route("reset-password")]
 
         public ActionResult ResetPassword(ResetPasswordModel reset)
         {
@@ -139,6 +144,55 @@ namespace BookStoreApp.Controllers
                 throw ex;
             }
         }
+
+
+        [HttpPost]
+        [Route("access-token-login")]
+
+        public IActionResult AccessTokenLoginUser(LoginModel loginModel)
+        {
+            try
+            {
+                var user = userManager.AccessTokenLogin(loginModel);
+                if (user != null)
+                {
+                    return Ok(new ResponseModel<RefreshLoginResponse> { Success = true, Message = "login successfully", Data = user });
+                }
+                else
+                {
+
+                    return BadRequest(new ResponseModel<string> { Success = false, Message = " access token login failed" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost]
+        [Route("refresh-token")]
+        public IActionResult RefreshToken(RefreshRequestModel model)
+        {
+            try
+            {
+                var result = userManager.RefreshAccessToken(model.RefreshToken);
+
+                if (result != null) {
+
+                  return Ok(new ResponseModel<RefreshLoginResponse> { Success = true, Message = "Refresh token Successfully", Data = result });
+                }
+                else
+                {
+                    return BadRequest(new ResponseModel<string> { Success = false, Message = " failed to get refresh token"});
+                }
+
+            }catch(Exception ex)
+            {
+              throw ex;
+            }
+        }
+        
 
     }
 

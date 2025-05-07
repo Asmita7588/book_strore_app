@@ -1,18 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using CommonLayer.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using RepositoryLayer.Models;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
 using RepositoryLayer.Jwt;
+using Microsoft.EntityFrameworkCore;
 
 namespace RepositoryLayer.Services
 {
@@ -30,19 +24,34 @@ namespace RepositoryLayer.Services
             this.jwtFile = jwtFile;
         }
 
-        public UserEntity RegisterUser(RegisterModel model)
+        public RegisterModel RegisterUser(RegisterModel model)
         {
-            UserEntity user = new UserEntity();
-            user.FullName = model.FullName;
-            user.Email = model.Email;
-            user.MobileNumber = model.MobileNumber;
-            user.Password = EncodePasswordToBase6(model.Password);;
-            this.context.Users.Add(user);
-            context.SaveChanges();
-            return user;
+            try
+            {
+                var user = new UserEntity
+                {
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    MobileNumber = model.MobileNumber,
+                    Role = "user"
+                };
+                user.Password = EncodePasswordToBase64(model.Password);
+                context.Users.Add(user);
+                context.SaveChanges();
+                return new RegisterModel
+                {
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    MobileNumber = model.MobileNumber,
+                };
+
+            }
+            catch (Exception ex) {
+                throw new Exception("Error User registration" + ex.Message);
+            }
         }
 
-        private string EncodePasswordToBase6(string password)
+        private string EncodePasswordToBase64(string password)
         {
             try
             {
@@ -79,7 +88,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var user = context.Users.FirstOrDefault(u => u.Email == userLoginModel.Email && u.Password == EncodePasswordToBase6(userLoginModel.Password));
+                var user = context.Users.FirstOrDefault(u => u.Email == userLoginModel.Email && u.Password == EncodePasswordToBase64(userLoginModel.Password));
                 if (user != null)
                 {
 
@@ -121,7 +130,7 @@ namespace RepositoryLayer.Services
 
                 if (CheckMail(user.Email))
                 {
-                    user.Password = EncodePasswordToBase6(resetPasswordModel.ConfirmPassword);
+                    user.Password = EncodePasswordToBase64(resetPasswordModel.ConfirmPassword);
                     context.SaveChanges();
                     return true;
                 }
@@ -132,9 +141,74 @@ namespace RepositoryLayer.Services
             }
             catch (Exception ex) {
 
-                throw new Exception($"Email does not exists: {ex.Message}");
+                throw new Exception($"Eror in reset password: {ex.Message}");
             }
         }
+
+
+        public RefreshLoginResponse AccessTokenLogin(LoginModel userLogin)
+        {
+            try {
+                var user = context.Users.FirstOrDefault(u => u.Email == userLogin.Email && u.Password == EncodePasswordToBase64(userLogin.Password));
+                if (user == null) return null;
+
+
+
+                var accessToken = jwtFile.GenerateToken(user.Email, user.UserId, user.Role);
+                var refreshToken = Guid.NewGuid().ToString();
+
+                var refreshEntry = new TokenEntity
+                {
+                    UserId = user.UserId,
+                    Role = user.Role,
+                    RefreshToken = refreshToken,
+                    RefreshTokenExpiry = DateTime.UtcNow.AddDays(7)
+                };
+
+                context.RefreshTokens.Add(refreshEntry);
+                context.SaveChanges();
+
+                return new RefreshLoginResponse
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken,
+                    
+                };
+            }
+            catch(Exception ex)
+            {
+                throw new Exception($"Eror in access Token: {ex.Message}");
+            }
+
+        }
+
+        public RefreshLoginResponse RefreshAccessToken(string refreshToken)
+        {
+            try
+            {
+                var token = context.RefreshTokens.FirstOrDefault(t =>
+                    t.RefreshToken == refreshToken && t.RefreshTokenExpiry > DateTime.UtcNow);
+                if (token == null) return null;
+
+                var user = context.Users.FirstOrDefault(u => u.UserId == token.UserId);
+                if (user == null) return null;
+
+                var newAccessToken =jwtFile.GenerateToken(user.Email, user.UserId, token.Role);
+                
+
+                return new RefreshLoginResponse
+                {
+                    AccessToken = newAccessToken,
+                    RefreshToken = token.RefreshToken,
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while refreshing access token: {ex.Message}");
+            }
+        }
+
+
 
 
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CommonLayer.Models;
 using ManagerLayer.Interfaces;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Models;
 
 namespace ManagerLayer.Services
 {
@@ -18,7 +18,7 @@ namespace ManagerLayer.Services
             this.adminRepo = adminRepo;
         }
 
-        public AdminEntity RegisterAdmin(RegisterModel model)
+        public RegisterModel RegisterAdmin(RegisterModel model)
         {
             return adminRepo.RegisterAdmin(model);
         }

@@ -14,6 +14,9 @@ namespace RepositoryLayer.Context
 
         public DbSet<AdminEntity> Admins { get; set; }
 
+        public DbSet<TokenEntity> RefreshTokens { get; set; }
+
+
 
     }
 }
