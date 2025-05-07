@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CommonLayer.Models;
 using ManagerLayer.Interfaces;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Models;
 
 namespace ManagerLayer.Services
 {
@@ -20,7 +20,7 @@ namespace ManagerLayer.Services
         }
     
     
-        public UserEntity RegisterUser(RegisterModel model)
+        public RegisterModel RegisterUser(RegisterModel model)
         {
             return userRepo.RegisterUser(model);
         }
@@ -43,6 +43,15 @@ namespace ManagerLayer.Services
         public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel)
         {
             return userRepo.ResetPassword(Email, resetPasswordModel);   
+        }
+
+        public RefreshLoginResponse AccessTokenLogin(LoginModel userLogin)
+        {
+            return userRepo.AccessTokenLogin(userLogin);
+        }
+        public RefreshLoginResponse RefreshAccessToken(string refreshToken)
+        {
+            return userRepo.RefreshAccessToken(refreshToken);   
         }
     }
 }

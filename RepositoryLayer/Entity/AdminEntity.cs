@@ -17,7 +17,8 @@ namespace RepositoryLayer.Entity
         public string FullName { get; set; }
 
         [Required]
-        [EmailAddress]
+        //[EmailAddress]
+        [EmailAddress(ErrorMessage = "Invalid Email format")]
         [Column("Email", TypeName = "varchar(100)")]
         public string Email { get; set; }
 
@@ -29,6 +30,6 @@ namespace RepositoryLayer.Entity
         [Column("MobileNumber", TypeName = "varchar(15)")]
         public string MobileNumber { get; set; }
 
-        public string Role { get; set; } = "admin";
+        public string Role { get; set; } 
     }
 }

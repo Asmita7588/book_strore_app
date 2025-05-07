@@ -4,13 +4,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using CommonLayer.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
+
 using RepositoryLayer.Jwt;
+
+using RepositoryLayer.Migrations;
+using RepositoryLayer.Models;
+
 
 namespace RepositoryLayer.Services
 {
@@ -28,8 +32,9 @@ namespace RepositoryLayer.Services
             this.jwtFile = jwtFile;
         }
 
-        public AdminEntity RegisterAdmin(RegisterModel model)
+        public RegisterModel RegisterAdmin(RegisterModel model)
         {
+<<<<<<< HEAD
             try
             {
                 AdminEntity admin = new AdminEntity();
@@ -40,15 +45,49 @@ namespace RepositoryLayer.Services
                 this.context.Admins.Add(admin);
                 context.SaveChanges();
                 return admin;
+=======
+<<<<<<< Updated upstream
+            AdminEntity admin = new AdminEntity();
+            admin.FullName = model.FullName;
+            admin.Email = model.Email;
+            admin.MobileNumber = model.MobileNumber;
+            admin.Password = EncodePasswordToBase6(model.Password); ;
+            this.context.Admins.Add(admin);
+            context.SaveChanges();
+            return admin;
+=======
+            try
+            {
+                var admin = new AdminEntity
+                {
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    MobileNumber = model.MobileNumber,
+                    Role = "admin"
+                };
+                admin.Password = EncodePasswordToBase64(model.Password);
+                context.Admins.Add(admin);
+                context.SaveChanges();
+                return new RegisterModel
+                {
+                    FullName = model.FullName,
+                    Email = model.Email,
+                    MobileNumber = model.MobileNumber,
+                };
+>>>>>>> user
             }
             catch (Exception ex) {
 
                 throw new Exception("Error in Admin registration" + ex.Message);
 
             }
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> user
         }
 
-        private string EncodePasswordToBase6(string password)
+        private string EncodePasswordToBase64(string password)
         {
             try
             {
@@ -83,7 +122,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var admin = context.Admins.FirstOrDefault(u => u.Email == adminLoginModel.Email && u.Password == EncodePasswordToBase6(adminLoginModel.Password));
+                var admin = context.Admins.FirstOrDefault(u => u.Email == adminLoginModel.Email && u.Password == EncodePasswordToBase64(adminLoginModel.Password));
                 if (admin != null)
                 {
 
@@ -122,6 +161,11 @@ namespace RepositoryLayer.Services
         }
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< Updated upstream
+=======
+>>>>>>> user
         public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel)
         {
             try
@@ -130,7 +174,11 @@ namespace RepositoryLayer.Services
 
                 if (CheckMail(admin.Email))
                 {
+<<<<<<< HEAD
                     admin.Password = EncodePasswordToBase6(resetPasswordModel.ConfirmPassword);
+=======
+                    admin.Password = EncodePasswordToBase64(resetPasswordModel.ConfirmPassword);
+>>>>>>> user
                     context.SaveChanges();
                     return true;
                 }
@@ -151,6 +199,10 @@ namespace RepositoryLayer.Services
 
 
 
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> user
 
     }
 }

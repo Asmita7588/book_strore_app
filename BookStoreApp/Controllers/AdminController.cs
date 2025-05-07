@@ -1,14 +1,16 @@
-﻿using System;
-using CommonLayer.Models;
+
+﻿using System;﻿
 using ManagerLayer.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryLayer.Entity;
+using RepositoryLayer.Migrations;
+using RepositoryLayer.Models;
 
 namespace BookStoreApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/admin")]
     [ApiController]
     public class AdminController : ControllerBase
     {
@@ -22,31 +24,36 @@ namespace BookStoreApp.Controllers
         }
 
         [HttpPost]
-        [Route("registerAdmin")]
-
         public IActionResult Register(RegisterModel model)
         {
 
             var check = adminManager.CheckMail(model.Email);
             if (check)
             {
-                return BadRequest(new ResponseModel<AdminEntity> { Success = true, Message = "email already Exists" });
+                return BadRequest(new ResponseModel<RegisterModel> { Success = true, Message = "email already Exists" });
 
             }
             else
             {
                 var result = adminManager.RegisterAdmin(model);
+                var response = new RegistrationResponseModel
+                {
+                    FullName = result.FullName,
+                    Email = result.Email,
+                    MobileNumber = result.MobileNumber
+                };
+
                 if (result != null)
                 {
-                    return Ok(new ResponseModel<AdminEntity> { Success = true, Message = "Register successfully", Data = result });
+                    return Ok(new ResponseModel<RegistrationResponseModel> { Success = true, Message = "Register successfully", Data = response });
 
                 }
-                return BadRequest(new ResponseModel<AdminEntity> { Success = false, Message = "Register failed", Data = result });
+                return BadRequest(new ResponseModel<AdminEntity> { Success = false, Message = "Register failed" });
             }
         }
 
         [HttpPost]
-        [Route("loginAdmin")]
+        [Route("login")]
 
         public IActionResult LoginUser(LoginModel loginModel)
         {
@@ -59,10 +66,19 @@ namespace BookStoreApp.Controllers
             return BadRequest(new ResponseModel<string> { Success = false, Message = "login failed", Data = user });
 
         }
+<<<<<<< HEAD
 
 
         [HttpPost]
         [Route("ForgotPassword")]
+=======
+<<<<<<< Updated upstream
+=======
+
+
+        [HttpPost]
+        [Route("forgot-password")]
+>>>>>>> user
         public IActionResult ForgotPassowod(string Email)
         {
             try
@@ -97,7 +113,11 @@ namespace BookStoreApp.Controllers
 
         [Authorize]
         [HttpPost]
+<<<<<<< HEAD
         [Route("ResetPassword")]
+=======
+        [Route("reset-password")]
+>>>>>>> user
 
         public ActionResult ResetPassword(ResetPasswordModel reset)
         {
@@ -119,5 +139,9 @@ namespace BookStoreApp.Controllers
                 throw ex;
             }
         }
+<<<<<<< HEAD
+=======
+>>>>>>> Stashed changes
+>>>>>>> user
     }
 }

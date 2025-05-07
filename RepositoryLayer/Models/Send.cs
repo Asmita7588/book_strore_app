@@ -4,7 +4,7 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 
-namespace CommonLayer.Models
+namespace RepositoryLayer.Models
 {
     public class Send
     {
@@ -13,12 +13,6 @@ namespace CommonLayer.Models
             string FromEmail = "girhepunjeasmita25@gmail.com";
             MailMessage Message = new MailMessage(FromEmail, ToEmail);
 
-            //string ResetUrl = $"https://4200/reset-password?token={Token}";
-            ////$@ use to write html code in any laguage
-            //string MailBody = $@"
-            ////<p>Your Password Reset Token : <strong>{Token}</strong></p>
-            //<p>Click The Link Below To Reset Your Password:</p>
-            //<p><a href = '{ResetUrl}'>{ResetUrl}</a></p>";
             string MailBody = "Token Generated : " + Token;
 
             Message.Subject = "Token Generated For Forgot Password";
