@@ -9,7 +9,13 @@ using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
+<<<<<<< Updated upstream
 
+=======
+using RepositoryLayer.Models;
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 using RepositoryLayer.Jwt;
 
 using RepositoryLayer.Migrations;
@@ -34,6 +40,7 @@ namespace RepositoryLayer.Services
 
         public RegisterModel RegisterAdmin(RegisterModel model)
         {
+<<<<<<< Updated upstream
 <<<<<<< HEAD
             try
             {
@@ -47,15 +54,18 @@ namespace RepositoryLayer.Services
                 return admin;
 =======
 <<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             AdminEntity admin = new AdminEntity();
             admin.FullName = model.FullName;
             admin.Email = model.Email;
             admin.MobileNumber = model.MobileNumber;
-            admin.Password = EncodePasswordToBase6(model.Password); ;
+            admin.Password = EncodePasswordToBase64(model.Password); ;
             this.context.Admins.Add(admin);
             context.SaveChanges();
             return admin;
-=======
+
             try
             {
                 var admin = new AdminEntity
@@ -161,11 +171,14 @@ namespace RepositoryLayer.Services
         }
 
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 =======
 >>>>>>> user
+=======
+>>>>>>> Stashed changes
         public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel)
         {
             try
@@ -199,10 +212,14 @@ namespace RepositoryLayer.Services
 
 
 
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 >>>>>>> user
+=======
+
+>>>>>>> Stashed changes
 
     }
 }
