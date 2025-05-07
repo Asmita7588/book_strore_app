@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Models;
 <<<<<<< Updated upstream
 
 =======
@@ -41,6 +42,7 @@ namespace RepositoryLayer.Services
         public RegisterModel RegisterAdmin(RegisterModel model)
         {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
             try
             {
@@ -54,6 +56,9 @@ namespace RepositoryLayer.Services
                 return admin;
 =======
 <<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
@@ -172,11 +177,14 @@ namespace RepositoryLayer.Services
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 <<<<<<< Updated upstream
 =======
 >>>>>>> user
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         public bool ResetPassword(string Email, ResetPasswordModel resetPasswordModel)
@@ -213,10 +221,14 @@ namespace RepositoryLayer.Services
 
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 =======
 >>>>>>> Stashed changes
 >>>>>>> user
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes
