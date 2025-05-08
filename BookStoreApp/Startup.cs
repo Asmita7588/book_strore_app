@@ -46,6 +46,9 @@ namespace BookStoreApp
             services.AddTransient<IAdminRepo, AdminRepo>();
             services.AddTransient<IAdminManager, AdminManager>();
             services.AddTransient<JwtFile>();
+            services.AddTransient<IBookRepo, BookRepo>();
+            services.AddTransient<IBookManager, BookManager>();
+
 
 
 

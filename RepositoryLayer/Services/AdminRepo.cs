@@ -165,6 +165,69 @@ namespace RepositoryLayer.Services
             }
         }
 
+        public RefreshLoginResponse AccessTokenLogin(LoginModel userLogin)
+        {
+            try
+            {
+                var admin = context.Admins.FirstOrDefault(u => u.Email == userLogin.Email && u.Password == EncodePasswordToBase64(userLogin.Password));
+                if (admin == null) return null;
+
+
+
+                var accessToken = jwtFile.GenerateToken(admin.Email, admin.UserId, admin.Role);
+                var refreshToken = Guid.NewGuid().ToString();
+
+                var refreshEntry = new Entity.TokenEntity
+                {
+                    UserId = admin.UserId,
+                    Role = admin.Role,
+                    RefreshToken = refreshToken,
+                    RefreshTokenExpiry = DateTime.UtcNow.AddDays(7)
+                };
+
+                context.RefreshTokens.Add(refreshEntry);
+                context.SaveChanges();
+
+                return new RefreshLoginResponse
+                {
+                    AccessToken = accessToken,
+                    RefreshToken = refreshToken,
+
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Eror in access Token: {ex.Message}");
+            }
+
+        }
+
+        public RefreshLoginResponse RefreshAccessToken(string refreshToken)
+        {
+            try
+            {
+                var token = context.RefreshTokens.FirstOrDefault(t =>
+                    t.RefreshToken == refreshToken && t.RefreshTokenExpiry > DateTime.UtcNow);
+                if (token == null) return null;
+
+                var admin = context.Admins.FirstOrDefault(u => u.UserId == token.UserId);
+                if (admin == null) return null;
+
+                var newAccessToken = jwtFile.GenerateToken(admin.Email, admin.UserId, token.Role);
+
+
+                return new RefreshLoginResponse
+                {
+                    AccessToken = newAccessToken,
+                    RefreshToken = token.RefreshToken,
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while refreshing access token: {ex.Message}");
+            }
+        }
+
 
 
 

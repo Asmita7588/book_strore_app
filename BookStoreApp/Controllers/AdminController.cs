@@ -130,5 +130,58 @@ namespace BookStoreApp.Controllers
             }
         }
 
+
+
+        [HttpPost]
+        [Route("access-token-login")]
+
+        public IActionResult AccessTokenLoginUser(LoginModel loginModel)
+        {
+            try
+            {
+                var user = adminManager.AccessTokenLogin(loginModel);
+                if (user != null)
+                {
+                    return Ok(new ResponseModel<RefreshLoginResponse> { Success = true, Message = "login successfully", Data = user });
+                }
+                else
+                {
+
+                    return BadRequest(new ResponseModel<string> { Success = false, Message = " access token login failed" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        [HttpPost]
+        [Route("refresh-token")]
+        public IActionResult RefreshToken(RefreshRequestModel model)
+        {
+            try
+            {
+                var result = adminManager.RefreshAccessToken(model.RefreshToken);
+
+                if (result != null)
+                {
+
+                    return Ok(new ResponseModel<RefreshLoginResponse> { Success = true, Message = "Refresh token Successfully", Data = result });
+                }
+                else
+                {
+                    return BadRequest(new ResponseModel<string> { Success = false, Message = " failed to get refresh token" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
     }
 }

@@ -39,5 +39,15 @@ namespace ManagerLayer.Services
         {
             return adminRepo.ResetPassword(Email, resetPasswordModel);
         }
+
+        public RefreshLoginResponse AccessTokenLogin(LoginModel userLogin)
+        {
+            return adminRepo.AccessTokenLogin(userLogin);
+        }
+
+        public RefreshLoginResponse RefreshAccessToken(string refreshToken)
+        {
+            return adminRepo.RefreshAccessToken(refreshToken);
+        }
     }
 }

@@ -11,7 +11,7 @@ namespace RepositoryLayer.Models
         
         [Column("FUllName", TypeName = "varchar(100)")]
         [Required(ErrorMessage = "FirstName required")]
-        [RegularExpression("^[a-zA-Z]+$", ErrorMessage = "only letters are accepted")]
+        [RegularExpression("^[a-zA-Z]+([ '-][a-zA-Z]+)*$", ErrorMessage = "Only letters are accepted")]
         public string FullName { get; set; }
 
         

@@ -16,6 +16,8 @@ namespace RepositoryLayer.Context
 
         public DbSet<TokenEntity> RefreshTokens { get; set; }
 
+        public DbSet<BookEntity> Books { get; set; }
+
 
 
     }
