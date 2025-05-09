@@ -37,7 +37,7 @@ namespace RepositoryLayer.Services
 
                 var books = new List<BookEntity>();
 
-                using var reader = new StreamReader(file.OpenReadStream());
+              using  var reader = new StreamReader(file.OpenReadStream());
                 string line;
                 int lineNumber = 0;
 
@@ -177,6 +177,78 @@ namespace RepositoryLayer.Services
             catch (Exception ex)
             {
                 throw new Exception($"Error while Fetching book by Id: {ex.Message}");
+            }
+        }
+
+        public async Task<List<BookEntity>> GetBooksByPriceAscendingAsync()
+        {
+            try
+            {
+                var books = await context.Books .OrderBy(b => b.Price).ToListAsync();
+
+                return books;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while fetching books by price in ascending order: {ex.Message}");
+            }
+        }
+
+        public async Task<List<BookEntity>> GetBooksByPriceDescendingAsync()
+        {
+            try
+            {
+                var books = await context.Books.OrderByDescending(b => b.Price).ToListAsync();
+
+                return books;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while fetching books by price in ascending order: {ex.Message}");
+            }
+        }
+
+        public async Task<BookEntity> GetMostRecentBookAsync()
+        {
+            try
+            {
+                return await context.Books
+                    .Where(b => b.createdAtDate <= DateTime.Now)
+                    .OrderByDescending(b => b.createdAtDate)
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error fetching most recent book: {ex.Message}");
+            }
+        }
+
+        public async Task<List<BookEntity>> SearchBooksByNameAsync(string bookName)
+        {
+            try
+            {
+                return await context.Books
+                    .Where(b => b.BookName.Contains(bookName))
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while searching book by name: {ex.Message}");
+            }
+        }
+
+        public async Task<List<BookEntity>> SearchBooksByAuthorAsync(string authorName)
+        {
+            try
+            {
+                var books = await context.Books
+                    .Where(b => b.Author.Contains(authorName)) 
+                    .ToListAsync(); 
+                return books;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while searching for books by author: {ex.Message}");
             }
         }
 

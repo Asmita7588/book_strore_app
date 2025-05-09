@@ -47,5 +47,28 @@ namespace ManagerLayer.Services
             return bookRepo.GetBookById(bookId);
         }
 
+        public async Task<List<BookEntity>> GetBooksByPriceAscendingAsync()
+        {
+            return await bookRepo.GetBooksByPriceAscendingAsync();
+        }
+
+        public async Task<List<BookEntity>> GetBooksByPriceDescendingAsync()
+        {
+            return await bookRepo.GetBooksByPriceDescendingAsync();
+        }
+        public async Task<BookEntity> GetMostRecentBookAsync()
+        {
+            return await bookRepo.GetMostRecentBookAsync();
+        }
+
+        public async Task<List<BookEntity>> SearchBooksByNameAsync(string bookName)
+        {
+            return await bookRepo.SearchBooksByNameAsync(bookName);
+        }
+
+        public async Task<List<BookEntity>> SearchBooksByAuthorAsync(string authorName)
+        {
+            return await bookRepo.SearchBooksByAuthorAsync(authorName);
+        }
     }
 }

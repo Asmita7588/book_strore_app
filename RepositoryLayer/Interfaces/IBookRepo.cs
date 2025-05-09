@@ -18,5 +18,13 @@ namespace RepositoryLayer.Interfaces
 
         public List<BookEntity> GetAllBooks();
         public BookEntity GetBookById(int id);
+
+        Task<List<BookEntity>> GetBooksByPriceAscendingAsync();
+        Task<List<BookEntity>> GetBooksByPriceDescendingAsync();
+
+        Task<BookEntity> GetMostRecentBookAsync();
+
+        Task<List<BookEntity>> SearchBooksByNameAsync(string bookName);
+        Task<List<BookEntity>> SearchBooksByAuthorAsync(string authorName);
     }
 }

@@ -26,6 +26,7 @@ namespace RepositoryLayer.Jwt
             var claims = new[]
             {
                 new Claim("Email", email),
+                //new Claim(ClaimTypes.Role, role),
                 new Claim("Role", role),
                 new Claim("UserId", userId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

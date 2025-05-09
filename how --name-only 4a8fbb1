@@ -1,0 +1,60 @@
+[33mcommit 4a8fbb13590f0fa942b69340a0190449561497f6[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Thu May 8 23:08:20 2025 +0530
+
+    [Asmita]Added:Implemented functionality for upload file, CURD operation For admin and User
+
+[33mcommit 6bc6438353231fc854e8a9af7f5fb514ffe186e2[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Wed May 7 21:29:05 2025 +0530
+
+    Resolved conflict in AdminRepo.cs and kept stash version
+
+[33mcommit d448522b09ce4016e94d06bd30448d5860da70cb[m
+Merge: b202a8e 9867ba6
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Wed May 7 16:45:15 2025 +0530
+
+    [Asmita]Resolved merge conflict: kept user branch code with correct using directives
+
+[33mcommit 9867ba612a025a67e72429343ccc3abb092a565e[m[33m ([m[1;31morigin/user[m[33m, [m[1;32muser[m[33m)[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Wed May 7 16:28:39 2025 +0530
+
+    [Asmita]Merged: admin changes from main into user
+
+[33mcommit b202a8e06cf847f9f1ddf1cc5982e58b7f4e39a2[m[33m ([m[1;31morigin/admin[m[33m, [m[1;32madmin[m[33m)[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Tue May 6 16:54:25 2025 +0530
+
+    [Asmita]Add:forgot and reset password implemetation for admin
+
+[33mcommit 88db01d8bacde9b48f906449e8101579d0a3ae0f[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Tue May 6 16:49:28 2025 +0530
+
+    [Asmita]Add:forgot and reset password implemetation
+
+[33mcommit bb956fc7382da9ef8f9ea4b4a52d1acafaa13fb5[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Tue May 6 01:28:04 2025 +0530
+
+    [Asmita]Created:implementd login user and admin functionality
+
+[33mcommit 84dbe93df659b9defc0aec3c9b2b50498b100e14[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Tue May 6 00:40:04 2025 +0530
+
+    [Asmita]Created:implementd register user and admin functionality
+
+[33mcommit 34590ea4b63390a63ccc1388085ad6e33857e99f[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Tue May 6 00:17:22 2025 +0530
+
+    [Asmita]Created:project structure
+
+[33mcommit baed4d09af118ed97a4d2d3f4b403c067ff235a6[m
+Author: Asmita Girhepunje <girhepunjeasmita25@gmail.com>
+Date:   Mon May 5 15:31:51 2025 +0530
+
+    project structure for bookStore app
