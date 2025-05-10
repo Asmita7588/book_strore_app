@@ -344,7 +344,7 @@ namespace BookStoreApp.Controllers
 
                     if (book != null)
                     {
-                        return Ok(new ResponseModel<BookEntity> { Success = true, Message = "Most recent book retrieved successfully", Data = book });
+                        return Ok(new ResponseModel<List<BookEntity>> { Success = true, Message = "Most recent book retrieved successfully", Data = book });
                     }
                     else
                     {
@@ -443,6 +443,42 @@ namespace BookStoreApp.Controllers
                     new ResponseModel<string> 
                     {
                         Success = false, Message = $"Internal server error: {ex.Message}"
+                    });
+            }
+        }
+
+
+        [HttpGet("search-book")]
+        public async Task<IActionResult> SearchBooks(string book)
+        {
+            try
+            {
+                string role = User.FindFirst("Role")?.Value;
+
+                if (role == "admin" || role == "user")
+                {
+                    var books = await bookManager.SearchBooksAsync(book);
+
+                    if (books != null && books.Count > 0)
+                        return Ok(new ResponseModel<List<BookEntity>> { Success = true, Message = $"Books by '{book}' found successfully.", Data = books });
+                    else
+                        return NotFound(new ResponseModel<bool> { Success = false, Message = "No books found for the given author or book name." });
+                }
+                else
+                    return StatusCode(403,
+                        new ResponseModel<bool>
+                        {
+                            Success = false,
+                            Message = "Access denied. Only admin or user can search for books."
+                        });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new ResponseModel<string>
+                    {
+                        Success = false,
+                        Message = $"Internal server error: {ex.Message}"
                     });
             }
         }

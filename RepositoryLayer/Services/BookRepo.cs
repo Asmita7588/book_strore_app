@@ -37,7 +37,7 @@ namespace RepositoryLayer.Services
 
                 var books = new List<BookEntity>();
 
-              using  var reader = new StreamReader(file.OpenReadStream());
+                using var reader = new StreamReader(file.OpenReadStream());
                 string line;
                 int lineNumber = 0;
 
@@ -68,7 +68,8 @@ namespace RepositoryLayer.Services
 
                 await context.Books.AddRangeAsync(books);
                 await context.SaveChangesAsync();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new Exception($"Failed to upload {ex.Message}");
             }
@@ -95,7 +96,8 @@ namespace RepositoryLayer.Services
                 context.SaveChangesAsync();
                 return Task.FromResult(true);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw new Exception($"Error in Add Book {ex.Message}");
             }
         }
@@ -154,10 +156,10 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                    List<BookEntity> books = new List<BookEntity>();
-                    books = context.Books.ToList();
-                    return books;
-               
+                List<BookEntity> books = new List<BookEntity>();
+                books = context.Books.ToList();
+                return books;
+
             }
             catch (Exception ex)
             {
@@ -184,7 +186,7 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var books = await context.Books .OrderBy(b => b.Price).ToListAsync();
+                var books = await context.Books.OrderBy(b => b.Price).ToListAsync();
 
                 return books;
             }
@@ -208,14 +210,15 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public async Task<BookEntity> GetMostRecentBookAsync()
+        public async Task<List<BookEntity>> GetMostRecentBookAsync()
         {
             try
             {
-                return await context.Books
+                 var maxDate = await context.Books
                     .Where(b => b.createdAtDate <= DateTime.Now)
-                    .OrderByDescending(b => b.createdAtDate)
-                    .FirstOrDefaultAsync();
+                   .MaxAsync(b => b.createdAtDate);
+
+                return await context.Books.Where(b => b.createdAtDate == maxDate).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -242,8 +245,8 @@ namespace RepositoryLayer.Services
             try
             {
                 var books = await context.Books
-                    .Where(b => b.Author.Contains(authorName)) 
-                    .ToListAsync(); 
+                    .Where(b => b.Author.Contains(authorName))
+                    .ToListAsync();
                 return books;
             }
             catch (Exception ex)
@@ -251,6 +254,23 @@ namespace RepositoryLayer.Services
                 throw new Exception($"Error while searching for books by author: {ex.Message}");
             }
         }
+
+        public async Task<List<BookEntity>> SearchBooksAsync(string searchTerm)
+        {
+            try
+            {
+                return await context.Books
+                    .Where(b => b.BookName.Contains(searchTerm) || b.Author.Contains(searchTerm))
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error while searching for books: {ex.Message}");
+            }
+        }
+
+
+
 
 
 

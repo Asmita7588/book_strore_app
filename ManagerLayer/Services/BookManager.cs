@@ -56,7 +56,7 @@ namespace ManagerLayer.Services
         {
             return await bookRepo.GetBooksByPriceDescendingAsync();
         }
-        public async Task<BookEntity> GetMostRecentBookAsync()
+        public async Task<List<BookEntity>> GetMostRecentBookAsync()
         {
             return await bookRepo.GetMostRecentBookAsync();
         }
@@ -69,6 +69,11 @@ namespace ManagerLayer.Services
         public async Task<List<BookEntity>> SearchBooksByAuthorAsync(string authorName)
         {
             return await bookRepo.SearchBooksByAuthorAsync(authorName);
+        }
+
+        public async Task<List<BookEntity>> SearchBooksAsync(string searchTerm)
+        {
+            return await bookRepo.SearchBooksAsync(searchTerm);
         }
     }
 }
