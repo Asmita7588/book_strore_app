@@ -48,6 +48,9 @@ namespace BookStoreApp
             services.AddTransient<JwtFile>();
             services.AddTransient<IBookRepo, BookRepo>();
             services.AddTransient<IBookManager, BookManager>();
+            services.AddTransient<ICartRepo, CartRepo>();
+            services.AddTransient<ICartManager, CartManager>();
+
 
 
 
