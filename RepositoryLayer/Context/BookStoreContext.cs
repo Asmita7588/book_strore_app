@@ -18,6 +18,18 @@ namespace RepositoryLayer.Context
 
         public DbSet<BookEntity> Books { get; set; }
 
+        public DbSet<CartEntity> Carts { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<CartEntity>()
+                .Property(c => c.Price)
+                .HasColumnType("decimal(18,2)");
+        }
+
+
 
 
     }

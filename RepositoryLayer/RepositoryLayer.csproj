@@ -7,6 +7,12 @@
   <ItemGroup>
     <Compile Remove="Migrations\20250508100808_book.cs" />
     <Compile Remove="Migrations\20250508100808_book.Designer.cs" />
+    <Compile Remove="Migrations\20250510175820_cart.cs" />
+    <Compile Remove="Migrations\20250510175820_cart.Designer.cs" />
+    <Compile Remove="Migrations\20250510180001_cart.cs" />
+    <Compile Remove="Migrations\20250510180001_cart.Designer.cs" />
+    <Compile Remove="Migrations\20250510181101_cart.cs" />
+    <Compile Remove="Migrations\20250510181101_cart.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
