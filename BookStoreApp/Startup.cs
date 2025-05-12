@@ -52,6 +52,8 @@ namespace BookStoreApp
             services.AddTransient<ICartManager, CartManager>();
             services.AddTransient<IWishListRepo, WishListRepo>();
             services.AddTransient<IWishListManager, WishListManager>();
+            services.AddTransient<IOrderRepo, OrderRepo>();
+            services.AddTransient<IOrderManager, IOrderManager>();
 
 
 
