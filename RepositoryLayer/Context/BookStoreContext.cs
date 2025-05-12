@@ -28,6 +28,8 @@ namespace RepositoryLayer.Context
                 .Property(c => c.Price)
                 .HasColumnType("decimal(18,2)");
         }
+        public DbSet<WishListEntity> WishList { get; set; }
+
 
 
 
