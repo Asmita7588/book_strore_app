@@ -26,6 +26,10 @@ namespace RepositoryLayer.Models
         [Required(ErrorMessage = "Price is required")]
         public int Price { get; set; }
 
+        public int BookId { get; set; }
+
+        public bool IsPurchased { get; set; } = false;
+
         public DateTime createdAtDate { get; set; }
 
         public DateTime updatedAtDate { get; set; }
