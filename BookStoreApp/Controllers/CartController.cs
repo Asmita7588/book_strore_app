@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using RepositoryLayer.Models;
 using System.Collections.Generic;
 using ManagerLayer.Interfaces;
+using System.Linq;
 
 namespace BookStoreApp.Controllers
 {
@@ -180,11 +181,24 @@ namespace BookStoreApp.Controllers
                 if (role != null && role == "admin" || role == "user")
                 {
                     var cartItems = await cartManager.GetCartItems(userId);
-                    return Ok(new ResponseModel<List<CartModel>>
+                    decimal grandTotal = cartItems?.Sum(item => item.TotalPrice) ?? 0;
+
+                    if (cartItems == null || cartItems.Count == 0)
+                    {
+                        return Ok(new ResponseModel<List<CartModel>>
+                        {
+                            Success = true,
+                            Message = "Your cart is empty",
+                            Data = new List<CartModel>(),
+                        });
+                    }
+                    return Ok(new CartResponseModel<List<CartModel>>
                     {
                         Success = true,
                         Message = "Cart items retrieved successfully",
-                        Data = cartItems
+                        Data = cartItems,
+                        TotalPrice = grandTotal
+
                     });
                 }
                 else

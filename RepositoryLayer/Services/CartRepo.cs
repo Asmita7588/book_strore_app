@@ -65,13 +65,15 @@ namespace RepositoryLayer.Services
 
                 return new CartModel
                 {
+                    CartId = existingCartItem.CartId,
                     UserId = userId,
                     BookId = bookId,
                     Quantity = existingCartItem.Quantity,
                     Price = existingCartItem.Price,
                     IsPurchased = false,
                     FullName = user.FullName,
-                    UserEmail = user.Email
+                    UserEmail = user.Email,
+                    
                 };
             }
             catch (Exception ex)
@@ -144,7 +146,8 @@ namespace RepositoryLayer.Services
                 FullName =user.FullName, 
                 BookId = cart.BookId,
                 Quantity = cart.Quantity,
-                Price = cart.Price
+                Price = cart.Price,
+                UserEmail = user.Email,
             }).ToList();
         }
 
