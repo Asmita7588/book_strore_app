@@ -25,6 +25,8 @@ namespace RepositoryLayer.Entity
         [Required]
         public Decimal Price { get; set; }
 
+        public bool IsPurchased { get; set; }
+
         // Navigation properties
         public virtual UserEntity User { get; set; }
         public virtual BookEntity Book { get; set; }

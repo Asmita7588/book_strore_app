@@ -9,5 +9,6 @@ namespace RepositoryLayer.Interfaces
     public interface IOrderRepo
     {
         Task<List<OrdersWithBookDetails>> PlaceOrderFromCart(int userId);
+         Task<List<OrdersWithBookDetails>> GetOrderDetails(int userId);
     }
 }

@@ -20,5 +20,10 @@ namespace ManagerLayer.Services
         {
             return await orderRepo.PlaceOrderFromCart(userId);
         }
+
+        public async Task<List<OrdersWithBookDetails>> GetOrderDetails(int userId)
+        {
+            return await orderRepo.GetOrderDetails(userId);
+        }
     }
 }

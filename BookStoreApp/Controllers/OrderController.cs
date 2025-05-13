@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ManagerLayer.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,5 +37,42 @@ namespace BookStoreApp.Controllers
                 return StatusCode(500, new { Success = false, Message = "An error occurred while placing the order.", Error = ex.Message });
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetOrderDetails()
+        {
+            try
+            {
+                int userId = int.Parse(User.FindFirst("UserId").Value);
+
+                var orderDetails = await orderManager.GetOrderDetails(userId);
+
+                if (orderDetails == null || orderDetails.Count == 0)
+                {
+                    return NotFound(new
+                    {
+                        Success = false,
+                        Message = "No orders found for the user."
+                    });
+                }
+
+                return Ok(new
+                {
+                    Success = true,
+                    Message = "Order details fetched successfully.",
+                    Data = orderDetails
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    Success = false,
+                    Message = "An error occurred while fetching order details.",
+                    Error = ex.Message
+                });
+            }
+        }
     }
 }
+

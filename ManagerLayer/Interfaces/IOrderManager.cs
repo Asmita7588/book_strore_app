@@ -9,5 +9,6 @@ namespace ManagerLayer.Interfaces
     public interface IOrderManager
     {
         Task<List<OrdersWithBookDetails>> PlaceOrderFromCart(int userId);
+        Task<List<OrdersWithBookDetails>> GetOrderDetails(int userId);
     }
 }

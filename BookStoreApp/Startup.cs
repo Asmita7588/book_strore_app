@@ -144,6 +144,34 @@ namespace BookStoreApp
             {
                 endpoints.MapControllers();
             });
+
+
+            //app.Run(async context =>
+            //{
+            //    await context.Response.WriteAsync("Hosting EnvironmentName :" + env.EnvironmentName);
+            //});
+
+            //app.MapGet("/env", (IWebHostEnvironment env) =>
+            //{
+            //    return Results.Ok("Hosting EnvironmentName: " + env.EnvironmentName);
+            //});
+
+
+
+            //var builder2 = WebApplication.CreateBuilder(args);
+
+            //// Get the environment name
+            //var env2 = builder2.Environment; // You now have access to env.EnvironmentName
+
+            //var app2 = builder2.Build();
+
+            //// Middleware to write environment name in response
+            //app.Run(async context =>
+            //{
+            //    await context.Response.WriteAsync("Hosting EnvironmentName: " + env2.EnvironmentName);
+            //});
+
+            //app2.Run();
         }
     }
 }
