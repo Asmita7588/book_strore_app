@@ -35,6 +35,8 @@ namespace RepositoryLayer.Context
         public DbSet<WishListEntity> WishList { get; set; }
         public DbSet<OrderEntity> OrderSummary { get; set; }
 
+        public DbSet<CustomerDetails> Customers { get; set; }
+
       
 
 
