@@ -27,8 +27,16 @@ namespace RepositoryLayer.Context
             modelBuilder.Entity<CartEntity>()
                 .Property(c => c.Price)
                 .HasColumnType("decimal(18,2)");
+
+            modelBuilder.Entity<OrderEntity>()
+               .Property(o => o.Price)
+               .HasColumnType("decimal(18,2)");
         }
         public DbSet<WishListEntity> WishList { get; set; }
+        public DbSet<OrderEntity> OrderSummary { get; set; }
+
+      
+
 
 
 
